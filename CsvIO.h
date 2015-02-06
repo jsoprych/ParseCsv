@@ -59,6 +59,20 @@ typedef std::vector<VStr> VVStr; // vector of string vectors
 std::ostream& operator << (std::ostream& os, const VVStr& vvs){
   // assuming uniform cop and row length
   char DELIM = '|';
+  if(vvs.size()){
+    int field_count = vvs[0].size();
+    for(auto& row: vvs){
+      for(int f = 0; f < field_count; f++){
+        if(f){
+          os << DELIM;
+        }
+        os << row[f];
+      }
+      os << std::endl;
+    }
+    return os;
+  }
+
   int col_len = vvs.size();
   if(col_len){
     int row_len = vvs[0].size();
@@ -86,6 +100,10 @@ class CsvIO
 
     const char* test(){return "Yello";}
 
+    const VVStr& getGrid(){
+      return _grid;
+    }
+
     bool readCvsFile(const char* filePath){
       _grid.clear();
       FILE * pFile;
@@ -94,24 +112,19 @@ class CsvIO
         ImportCtx ic;
         ic.zFile = filePath;
         ic.in = pFile;
-
-        int idx = 0;
-
+        VStr row;
         while(csv_read_one_field(&ic)){
-          if(_grid.size() < (size_t)idx+1){
-            VStr vs;
-            _grid.push_back(vs);
-          }
-          VStr& vs = _grid[idx++];
+
           //std::cout << ic << std::endl;
-          vs.push_back(ic.z);
+          row.push_back(ic.z);
           ic.z.clear();
           if( ic.cTerm != ic.cColSep ){ // reset field index after row
-            idx = 0;
+            _grid.push_back(row);
+            row.clear();
           }
         }
         fclose (pFile);
-        std::cout << _grid;
+        //std::cout << _grid;
         return true;
       }
       return false;
