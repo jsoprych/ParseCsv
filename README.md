@@ -24,7 +24,7 @@ There is also an overloaded ostream operator for displaying the grid's content.
 3) access the grid containing the parsed results with the getGrid() method:
 
   
-From the grid reference, you can access any field/column value using standard vector container methods. 
+From the grid variable, you can access any field/column value using standard vector container methods. 
 	e.g. string value = grid[row][col];
 	
 ```C++
