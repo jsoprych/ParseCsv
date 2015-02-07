@@ -4,7 +4,8 @@ A C++ header only, rfc4180 compliant, CSV file parser, using some field parsing 
 The project's main deliverable class, CsvIO (found and completely implemented in CvsIO.h) currently access a csv compliant file and parses it into a 'grid', e.g. a vector of row (field) string vectors, defined in C++ as follows:
 
 typedef std::vector<std::string> VStr;
-typedef std::vector<VStr> VVStr; // vector of (row) string (field) vectors (grid)
+
+typedef std::vector<VStr> VVStr; // vector of string (field) vectors (grid)
 
 There is also an overloaded ostream operator for displaying the grid's content.
 
