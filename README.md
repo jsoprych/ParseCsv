@@ -29,10 +29,10 @@ From the grid reference, you can access any field/column value using standard ve
 	
 ```C++
 #include <iostream>
-#include "CsvIO.h"
+#include "CsvIO.h"  // 1.a) include CsvIO.h file
 using namespace std;
 
-CsvIO io;   // 1) instantiate class
+CsvIO io;   // 1.b) instantiate CvsIO class
 
 int main(){
   io.readCsvFile("sym.csv");  // 2) parse 'sym.csv' file
