@@ -16,15 +16,23 @@
 #include "CsvIO.h"
 using namespace std;
 
-CsvIO io;
+CsvIO io;   // 1) instantiate class
 
 int main(){
-  io.readCsvFile("sym.csv");
+  io.readCsvFile("sym.csv");  // 2) parse 'sym.csv' file
 
-  //for(int i = 0; i < 1000; i++){
-  std::cout << io.getGrid();
+  auto grid = io.getGrid();   // 3) get grid containing the parsed results
+
+  // Example A: printing out resulting grid
+  cout << grid << endl; //
+
+  // Example B: print out specified grid element
+  int row = 3;
+  int col = 0; // zero based indexing
+
+  cout << "grid[" << row << "][" << col << "] = " << grid[row][col] << endlDebug;
   //}
 
-  cout << "The End :D" << endl;
+  cout << "The End ;D" << endl;
   return 0;
 }
