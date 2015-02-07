@@ -1,5 +1,7 @@
 # ParseCsv
-A C++ header only, rfc4180 compliant, CSV file parser, using some field parsing code from the freeware "sqlite" project. This project is currently only tested on Linux (64bit Ubuntu 14.04 LTS), but should work under most C++ 11 compatable development environments (windows, mac, etc) 
+A C++ header only, rfc4180 compliant, CSV file parser, using some field parsing code from the freeware "sqlite" project. 
+
+This project is currently only tested on Linux (64bit Ubuntu 14.04 LTS), but should work under most C++ 11 compatable development environments (windows, mac) with little if any modification. 
 
 The project's main deliverable class, CsvIO (found and completely implemented in CvsIO.h) currently access a csv compliant file and parses it into a 'grid', e.g. a vector of row (field) string vectors, defined in C++ as follows:
 
