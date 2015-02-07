@@ -20,39 +20,6 @@
 #include <string>
 #include <vector>
 
-/*
-** An object used to read a CSV and other files for import.
-*/
-//typedef struct ImportCtx ImportCtx;
-struct ImportCtx {
-  const char *zFile;  /* Name of the input file */
-  FILE *in;           /* Read the CSV text from this input stream */
-  std::string z; //char *z;            /* Accumulated text for a field */
-  int n = 0;          /* Number of bytes in z */
-  // int nAllocbv = 0;   /* Space allocated for z[] */
-  int nLine = 0;      /* Current line number */
-  int cTerm = 0;      /* Character that terminated the most recent field */
-  int cColSep = ',';  /*  rfc4180 column separator character.  (Usually ",") */
-  int cRowSep = '\n';    /*  rfc4180 row separator character.  (Usually "\n") */
-
-  friend std::ostream& operator << (std::ostream& os, const ImportCtx& ic){
-    os << "zFile: " << ic.zFile << ", "
-       << "in" << ic.in << ", "
-       << "n: " << ic.n << ", "
-       << "z: " << ic.z << ", "
-       << "nLine: " << ic.nLine << ", "
-       << "cTerm: " << ic.cTerm << ","
-       << "cColSep: " << ic.cColSep << ","
-       << "cRowSep: " << ic.cRowSep << std::endl;
-
-    return os;
-  }
-};
-
-/*
-** True if an interrupt (Control-C) has been received.
-*/
-
 typedef std::vector<std::string> VStr;
 typedef std::vector<VStr> VVStr; // vector of string vectors
 
@@ -70,20 +37,37 @@ std::ostream& operator << (std::ostream& os, const VVStr& vvs){
       }
       os << std::endl;
     }
-    return os;
   }
+  return os;
+}
 
-  int col_len = vvs.size();
-  if(col_len){
-    int row_len = vvs[0].size();
-    for(int r = 0; r < row_len; r++){
-      for(int c = 0; c < col_len; c++){
-        if(c){os << DELIM;}
-        os << vvs[c][r];
-      }
-      os << std::endl;
-    }
-  }
+/*
+** An object used to read a CSV and other files for import.
+*/
+//typedef struct ImportCtx ImportCtx;
+struct ImportCtx {
+  const char *zFile;  /* Name of the input file */
+  FILE *in;           /* Read the CSV text from this input stream */
+  std::string z; //char *z;            /* Accumulated text for a field */
+  int n = 0;          /* Number of bytes in z */
+  // int nAllocbv = 0;   /* Space allocated for z[] */
+  int nLine = 0;      /* Current line number */
+  int cTerm = 0;      /* Character that terminated the most recent field */
+  int cColSep = ',';  /*  rfc4180 column separator character.  (Usually ",") */
+  int cRowSep = '\n';    /*  rfc4180 row separator character.  (Usually "\n") */
+
+};
+
+std::ostream& operator << (std::ostream& os, const ImportCtx& ic){
+  os << "zFile: " << ic.zFile << ", "
+     << "in" << ic.in << ", "
+     << "n: " << ic.n << ", "
+     << "z: " << ic.z << ", "
+     << "nLine: " << ic.nLine << ", "
+     << "cTerm: " << ic.cTerm << ","
+     << "cColSep: " << ic.cColSep << ","
+     << "cRowSep: " << ic.cRowSep << std::endl;
+
   return os;
 }
 
@@ -104,7 +88,7 @@ class CsvIO
       return _grid;
     }
 
-    bool readCvsFile(const char* filePath){
+    bool readCsvFile(const char* filePath){
       _grid.clear();
       FILE * pFile;
       pFile = fopen (filePath,"r");
@@ -130,6 +114,7 @@ class CsvIO
       return false;
     }
 
+  protected:
     /* Read a single field of CSV text.  Compatible with rfc4180 and extended
     ** with the option of having a separator other than ",".
     **
@@ -142,6 +127,10 @@ class CsvIO
     **   +  Store the character that terminates the field in p->cTerm.  Store
     **      EOF on end-of-file.
     **   +  Report syntax errors on stderr
+    **
+    **   +  NOTE: I'm preserving as much of the original function code, as expressed
+    **      in the original SQLite shell program source. The main modification
+    **      made is in using std::string as a buffer for accumulating field chars.
     */
     //static char *csv_read_one_field(ImportCtx *p){
     static const char* csv_read_one_field(ImportCtx *p){
@@ -226,7 +215,6 @@ class CsvIO
       */
     //}
 
-  protected:
   private:
 };
 
